@@ -39,6 +39,8 @@ name its parts.
 
 > Each part includes a `data-part` attribute to help identify them in the DOM.
 
+<Anatomy id="toast" />
+
 On a high level, the toast consists of:
 
 - **Group**: The element that serves as a container for all the toasts.
@@ -248,6 +250,7 @@ return (
   <pre {...api.rootProps}>
     <div {...api.progressbarProps} />
     <p {...api.titleProps}>{api.title}</p>
+    <p {...api.descriptionProps}>{api.description}</p>
     <button onClick={api.dismiss}>Close</button>
   </pre>
 )
@@ -381,6 +384,7 @@ function ToastItem(props) {
   return (
     <div {...api.rootProps}>
       <p {...api.titleProps}>{api.title}</p>
+      <p {...api.descriptionProps}>{api.description}</p>
       <p>{api.type === "loading" ? <BeatLoader /> : null}</p>
       <button onClick={api.dismiss}>Close</button>
     </div>
@@ -399,6 +403,7 @@ toast.create({
         style={{ background: props.type === "loading" ? "pink" : "red" }}
       >
         <p>{props.title}</p>
+        <p>{props.description}</p>
         <button onClick={props.dismiss}>Close</button>
       </div>
     )
@@ -455,22 +460,5 @@ the toast.
 [data-part="root"]:not([data-open]) {
   animation-duration: 0.3s;
   animation-name: fadeout;
-}
-```
-
-### Progress bar
-
-When a progress bar is rendered and the `api.progressbarProps` from the
-`toast.connect` is used, we attach some styles the progress bar for ease of
-customization.
-
-To add animation to the progressbar, you only need to specify the
-`animation-name`. We attach the other animation properties to the progress bar.
-
-```css
-[data-part="progressbar"] {
-  height: 4px;
-  background: rgb(116, 116, 116);
-  animation-name: shrink;
 }
 ```

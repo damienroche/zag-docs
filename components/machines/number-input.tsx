@@ -1,17 +1,21 @@
 import * as numberInput from "@zag-js/number-input"
-import { useMachine, useSetup } from "@zag-js/react"
+import { normalizeProps, useMachine } from "@zag-js/react"
 import { chakra } from "@chakra-ui/system"
 import { BiChevronDown, BiChevronUp } from "react-icons/bi"
+import { useId } from "react"
 
 export function NumberInput(props: any) {
-  const [state, send] = useMachine(numberInput.machine, {
-    context: props.controls,
-  })
-  const ref = useSetup({ send, id: "1" })
-  const api = numberInput.connect(state, send)
+  const [state, send] = useMachine(
+    numberInput.machine({ id: useId(), ...props.defaultContext }),
+    {
+      context: props.controls,
+    },
+  )
+
+  const api = numberInput.connect(state, send, normalizeProps)
 
   return (
-    <div ref={ref} {...api.rootProps}>
+    <div {...api.rootProps}>
       <label {...api.labelProps}>Enter number:</label>
       <br />
       <chakra.div position="relative" display="inline-block">
@@ -37,7 +41,7 @@ export function NumberInput(props: any) {
             display="flex"
             justifyContent="center"
             _disabled={{ opacity: 0.5 }}
-            {...api.incrementButtonProps}
+            {...api.incrementTriggerProps}
           >
             <BiChevronUp />
           </chakra.button>
@@ -48,7 +52,7 @@ export function NumberInput(props: any) {
             display="flex"
             justifyContent="center"
             _disabled={{ opacity: 0.5 }}
-            {...api.decrementButtonProps}
+            {...api.decrementTriggerProps}
           >
             <BiChevronDown />
           </chakra.button>

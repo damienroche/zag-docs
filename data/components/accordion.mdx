@@ -36,6 +36,8 @@ we name its parts.
 
 > Each part includes a `data-part` attribute to help identify them in the DOM.
 
+<Anatomy id="accordion" />
+
 On a high level, the accordion consists of:
 
 - **Root**: The root container for the accordion
@@ -60,7 +62,7 @@ The accordion package exports two key functions:
 - `connect` — The function that translates the machine's state to JSX attributes
   and event handlers.
 
-> You'll also need to provide a unique `id` to the `useSetup` hook. This is used
+> You'll also need to provide a unique `id` to the `useMachine` hook. This is used
 > to ensure that every part has a unique identifier.
 
 Next, import the required hooks and functions for your framework and use the
@@ -112,7 +114,7 @@ const [state, send] = useMachine(
 
 ## Toggle each accordion item
 
-To collapse an already exapnded accordion item by clicking on it, set the
+To collapse an already expanded accordion item by clicking on it, set the
 context's `collapsible` property to `true`.
 
 > Note: If `multiple` is `true`, we internally set `collapsible` to be `true`.

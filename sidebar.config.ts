@@ -17,6 +17,7 @@ type SidebarItem =
       id: string
       label: string
       new?: boolean
+      href?: string
     }
   | {
       type: "link"
@@ -37,7 +38,6 @@ const sidebar: Record<"docs", SidebarItem[]> = {
         { type: "doc", label: "Installation", id: "installation" },
         { type: "doc", label: "State machine", id: "whats-a-machine" },
         { type: "doc", label: "Styling", id: "styling" },
-        { type: "doc", label: "TypeScript", id: "typescript-usage" },
         { type: "doc", label: "Composition", id: "composition" },
         {
           type: "doc",
@@ -45,6 +45,12 @@ const sidebar: Record<"docs", SidebarItem[]> = {
           id: "programmatic-control",
         },
         { type: "doc", label: "FAQ", id: "faq" },
+        {
+          type: "doc",
+          label: "Changelog",
+          id: "changelogs",
+          href: "/changelogs/latest",
+        },
       ],
     },
     {
@@ -55,14 +61,23 @@ const sidebar: Record<"docs", SidebarItem[]> = {
       items: [
         { type: "doc", label: "Accordion", id: "accordion" },
         { type: "doc", label: "Checkbox", id: "checkbox" },
+        { type: "doc", label: "Combobox", id: "combobox" },
         { type: "doc", label: "Dialog", id: "dialog" },
         { type: "doc", label: "Editable", id: "editable" },
+        { type: "doc", label: "Hover Card", id: "hover-card" },
         { type: "doc", label: "Menu", id: "menu" },
+        { type: "doc", label: "Context Menu", id: "context-menu" },
+        { type: "doc", label: "Nested Menu", id: "nested-menu" },
         { type: "doc", label: "Number Input", id: "number-input" },
+        { type: "doc", label: "Pagination", id: "pagination" },
         { type: "doc", label: "Pin Input", id: "pin-input" },
         { type: "doc", label: "Popover", id: "popover" },
-        { type: "doc", label: "Slider", id: "slider" },
+        { type: "doc", label: "Pressable", id: "pressable" },
+        { type: "doc", label: "Radio Group", id: "radio-group" },
         { type: "doc", label: "Range Slider", id: "range-slider" },
+        { type: "doc", label: "Rating", id: "rating" },
+        { type: "doc", label: "Select", id: "select" },
+        { type: "doc", label: "Slider", id: "slider" },
         { type: "doc", label: "Tabs", id: "tabs" },
         { type: "doc", label: "Tags Input", id: "tags-input" },
         { type: "doc", label: "Toast", id: "toast" },

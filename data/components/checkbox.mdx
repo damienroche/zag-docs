@@ -37,6 +37,8 @@ we name its parts.
 
 > Each part includes a `data-part` attribute to help identify them in the DOM.
 
+<Anatomy id="checkbox" />
+
 On a high level, the checkbox consists of:
 
 - **Root**: The root container for the checkbox
@@ -57,9 +59,6 @@ The checkbox package exports two key functions:
 - `machine` — The state machine logic for the checkbox widget.
 - `connect` — The function that translates the machine's state to JSX attributes
   and event handlers.
-
-> You'll also need to provide a unique `id` to the `useSetup` hook. This is used
-> to ensure that every part has a unique identifier.
 
 Next, import the required hooks and functions for your framework and use the
 checkbox machine in your project 🔥
@@ -91,14 +90,14 @@ const [state, send] = useMachine(
 )
 ```
 
-## Readonly checkboxes
+## Making the checkbox readonly
 
-To make a checkbox readonly, set the context's `readonly` property to true
+To make a checkbox readonly, set the context's `readOnly` property to true
 
 ```jsx {3}
 const [state, send] = useMachine(
   checkbox.machine({
-    readonly: true,
+    readOnly: true,
   }),
 )
 ```

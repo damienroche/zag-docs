@@ -1,6 +1,7 @@
-import { useMachine, useSetup } from "@zag-js/react"
+import { normalizeProps, useMachine } from "@zag-js/react"
 import * as tabs from "@zag-js/tabs"
 import { chakra } from "@chakra-ui/system"
+import { useId } from "react"
 
 const data = [
   { value: "item-1", label: "Item one", content: "Item one content" },
@@ -9,15 +10,18 @@ const data = [
 ]
 
 export function Tabs(props: any) {
-  const [state, send] = useMachine(tabs.machine({ value: "item-1" }), {
-    context: props.controls,
-  })
-  const ref = useSetup({ send, id: "1" })
-  const api = tabs.connect(state, send)
+  const [state, send] = useMachine(
+    tabs.machine({ id: useId(), value: "item-1" }),
+    {
+      context: props.controls,
+    },
+  )
+
+  const api = tabs.connect(state, send, normalizeProps)
 
   return (
-    <chakra.div width="full" maxW="400px" fontSize="sm" ref={ref}>
-      <chakra.div bg="white" borderBottomWidth="1px" {...api.triggerGroupProps}>
+    <chakra.div width="full" maxW="400px" fontSize="sm">
+      <chakra.div bg="white" borderBottomWidth="1px" {...api.tablistProps}>
         {data.map((item) => (
           <chakra.button
             py="2"

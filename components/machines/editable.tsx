@@ -1,19 +1,19 @@
 import * as editable from "@zag-js/editable"
-import { useMachine, useSetup } from "@zag-js/react"
+import { normalizeProps, useMachine } from "@zag-js/react"
 import { chakra } from "@chakra-ui/system"
 import { HStack } from "@chakra-ui/layout"
 import { Button } from "components/button"
+import { useId } from "react"
 
 export function Editable(props: any) {
-  const [state, send] = useMachine(editable.machine, {
+  const [state, send] = useMachine(editable.machine({ id: useId() }), {
     context: props.controls,
   })
 
-  const ref = useSetup({ send, id: "1" })
-  const api = editable.connect(state, send)
+  const api = editable.connect(state, send, normalizeProps)
 
   return (
-    <chakra.div width="300px" ref={ref} {...api.rootProps}>
+    <chakra.div width="300px" {...api.rootProps}>
       <chakra.div mb="3" {...api.areaProps}>
         <chakra.input
           className="focus-outline"
@@ -29,21 +29,21 @@ export function Editable(props: any) {
             size="sm"
             variant="outline"
             bg="white"
-            {...api.editButtonProps}
+            {...api.editTriggerProps}
           >
             Edit
           </Button>
         )}
         {api.isEditing && (
           <HStack>
-            <Button size="sm" variant="green" {...api.submitButtonProps}>
+            <Button size="sm" variant="green" {...api.submitTriggerProps}>
               Save
             </Button>
             <Button
               size="sm"
               variant="outline"
               bg="white"
-              {...api.cancelButtonProps}
+              {...api.cancelTriggerProps}
             >
               Cancel
             </Button>

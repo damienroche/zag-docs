@@ -1,25 +1,26 @@
 ```jsx
 import * as rangeSlider from "@zag-js/range-slider"
-import { useMachine, useSetup } from "@zag-js/react"
+import { useMachine, normalizeProps } from "@zag-js/react"
 
 export function RangeSlider() {
   const [state, send] = useMachine(
     rangeSlider.machine({
+      id: "1",
       name: ["min", "max"],
       value: [10, 60],
     }),
   )
-  const ref = useSetup({ send, id: "1" })
-  const api = rangeSlider.connect(state, send)
+
+  const api = rangeSlider.connect(state, send, normalizeProps)
 
   return (
-    <div ref={ref} {...api.rootProps}>
+    <div {...api.rootProps}>
       <div {...api.trackProps}>
         <div {...api.rangeProps} />
       </div>
-      {api.values.map((_, index) => (
+      {api.value.map((_, index) => (
         <div key={index} {...api.getThumbProps(index)}>
-          <input {...api.getInputProps(index)} />
+          <input {...api.getHiddenInputProps(index)} />
         </div>
       ))}
     </div>

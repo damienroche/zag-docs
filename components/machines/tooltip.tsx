@@ -1,17 +1,19 @@
-import { useMachine, useSetup } from "@zag-js/react"
+import { normalizeProps, useMachine, Portal } from "@zag-js/react"
 import * as tooltip from "@zag-js/tooltip"
 import { chakra } from "@chakra-ui/system"
 import { Button } from "components/button"
-import Portal from "@reach/portal"
+import { useId } from "react"
 
 export function Tooltip(props) {
-  const [state, send] = useMachine(tooltip.machine, { context: props.controls })
-  const ref = useSetup<HTMLButtonElement>({ send, id: "1" })
-  const api = tooltip.connect(state, send)
+  const [state, send] = useMachine(tooltip.machine({ id: useId() }), {
+    context: props.controls,
+  })
+
+  const api = tooltip.connect(state, send, normalizeProps)
 
   return (
     <>
-      <Button variant="green" size="sm" ref={ref} {...api.triggerProps}>
+      <Button variant="green" size="sm" {...api.triggerProps}>
         Hover me
       </Button>
       <Portal>

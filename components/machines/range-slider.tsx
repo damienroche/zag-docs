@@ -1,27 +1,29 @@
 import * as slider from "@zag-js/range-slider"
-import { useMachine, useSetup } from "@zag-js/react"
+import { normalizeProps, useMachine } from "@zag-js/react"
 import { chakra } from "@chakra-ui/system"
 import { Center, Flex } from "@chakra-ui/layout"
+import { useId } from "react"
 
 export function RangeSlider(props: any) {
   const [state, send] = useMachine(
     slider.machine({
+      id: useId(),
       name: "quantity",
       value: [10, 60],
     }),
     { context: props.controls },
   )
-  const ref = useSetup({ send, id: "1" })
-  const api = slider.connect(state, send)
+
+  const api = slider.connect(state, send, normalizeProps)
 
   return (
-    <chakra.div width="200px" ref={ref} {...api.rootProps}>
+    <chakra.div width="200px" {...api.rootProps}>
       <Flex justify="space-between">
         <chakra.label mr="2" {...api.labelProps}>
           Quantity
         </chakra.label>
         <output {...api.outputProps}>
-          <b>{api.values.join(" - ")}</b>
+          <b>{api.value.join(" - ")}</b>
         </output>
       </Flex>
 
@@ -47,7 +49,7 @@ export function RangeSlider(props: any) {
             {...api.rangeProps}
           />
         </chakra.div>
-        {api.values.map((_, index) => (
+        {api.value.map((_, index) => (
           <Center
             className="focus-outline"
             boxSize="20px"
@@ -58,7 +60,7 @@ export function RangeSlider(props: any) {
             key={index}
             {...api.getThumbProps(index)}
           >
-            <input {...api.getInputProps(index)} />
+            <input {...api.getHiddenInputProps(index)} />
           </Center>
         ))}
       </Flex>

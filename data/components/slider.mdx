@@ -41,6 +41,8 @@ name its parts.
 
 > Each part includes a `data-part` attribute to help identify them in the DOM.
 
+<Anatomy id="slider" />
+
 On a high level, the slider consists of:
 
 - **Root**: The root container for the slider
@@ -66,7 +68,7 @@ The slider package exports two key functions:
 - `connect` — The function that translates the machine's state to JSX attributes
   and event handlers.
 
-> You'll need to provide a unique `id` to the `useSetup` hook. This is used to
+> You'll need to provide a unique `id` to the `useMachine` hook. This is used to
 > ensure that every part has a unique identifier.
 
 Next, import the required hooks and functions for your framework and use the

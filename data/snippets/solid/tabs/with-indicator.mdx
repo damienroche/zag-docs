@@ -1,8 +1,8 @@
 ```jsx {13}
 // ...
 return (
-  <div ref={ref} {...api().rootProps}>
-    <div {...api().triggerGroupProps}>
+  <div {...api().rootProps}>
+    <div {...api().tablistProps}>
       {data.map((item) => (
         <button
           {...api().getTriggerProps({ value: item.value })}

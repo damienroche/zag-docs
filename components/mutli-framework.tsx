@@ -1,6 +1,6 @@
 import { Box, Flex, HStack, Stack, Text, VStack } from "@chakra-ui/layout"
 import { chakra } from "@chakra-ui/system"
-import { useMachine, useSetup } from "@zag-js/react"
+import { normalizeProps, useMachine } from "@zag-js/react"
 import * as tabs from "@zag-js/tabs"
 import { CodeArea } from "./code-area"
 import { ReactIcon, SolidIcon, VueIcon } from "./icons"
@@ -26,12 +26,12 @@ const FrameworkButton = chakra("button", {
 })
 
 export function MultiframeworkTabs() {
-  const [state, send] = useMachine(tabs.machine({ value: "react" }))
-  const ref = useSetup({ send, id: "r:1" })
-  const api = tabs.connect(state, send)
+  const [state, send] = useMachine(tabs.machine({ id: "m2", value: "react" }))
+
+  const api = tabs.connect(state, send, normalizeProps)
   return (
-    <Box ref={ref} {...api.rootProps}>
-      <HStack {...api.triggerGroupProps}>
+    <Box {...api.rootProps}>
+      <HStack {...api.tablistProps}>
         <FrameworkButton {...api.getTriggerProps({ value: "react" })}>
           <VStack>
             <ReactIcon />
@@ -94,10 +94,10 @@ export function MultiframeworkTabs() {
           <Playground
             component={NumberInput}
             hideControls
+            defaultContext={{ value: 0 }}
             defaultProps={{
               min: -10,
               max: 20,
-              value: 0,
               disabled: false,
             }}
           />

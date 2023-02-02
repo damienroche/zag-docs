@@ -1,20 +1,22 @@
 import Icon from "@chakra-ui/icon"
 import { Center, HStack } from "@chakra-ui/layout"
 import { chakra } from "@chakra-ui/system"
-import { Portal } from "@reach/portal"
 import * as dialog from "@zag-js/dialog"
-import { useMachine, useSetup } from "@zag-js/react"
+import { normalizeProps, useMachine, Portal } from "@zag-js/react"
 import { Button } from "components/button"
 import { HiX } from "react-icons/hi"
+import { useId } from "react"
 
 export function Dialog(props: { controls: any }) {
-  const [state, send] = useMachine(dialog.machine, { context: props.controls })
-  const ref = useSetup<HTMLButtonElement>({ send, id: "1" })
-  const api = dialog.connect(state, send)
+  const [state, send] = useMachine(dialog.machine({ id: useId() }), {
+    context: props.controls,
+  })
+
+  const api = dialog.connect(state, send, normalizeProps)
 
   return (
     <>
-      <Button size="sm" variant="green" ref={ref} {...api.triggerProps}>
+      <Button size="sm" variant="green" {...api.triggerProps}>
         Open Dialog
       </Button>
       {api.isOpen && (
@@ -31,7 +33,7 @@ export function Dialog(props: { controls: any }) {
             position="fixed"
             zIndex="modal"
             inset="0"
-            {...api.underlayProps}
+            {...api.containerProps}
           >
             <chakra.div
               width="full"
@@ -73,7 +75,7 @@ export function Dialog(props: { controls: any }) {
                 position="absolute"
                 top="3"
                 right="3"
-                {...api.closeButtonProps}
+                {...api.closeTriggerProps}
               >
                 <Icon as={HiX} />
               </chakra.button>

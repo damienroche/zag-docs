@@ -1,17 +1,17 @@
 ```jsx
-import { useActor, useMachine, useSetup } from "@zag-js/react"
+import { useActor, useMachine, normalizeProps } from "@zag-js/react"
 import * as toast from "@zag-js/toast"
 import { createContext } from "react"
 
 // 1. Create the single toast
 function Toast(props) {
   const [state, send] = useActor(props.actor)
-  const api = toast.connect(state, send)
+  const api = toast.connect(state, send, normalizeProps)
 
   return (
     <div {...api.rootProps}>
       <h3 {...api.titleProps}>{api.title}</h3>
-      <p>{api.description}</p>
+      <p {...api.descriptionProps}>{api.description}</p>
       <button onClick={api.dismiss}>Close</button>
     </div>
   )
@@ -22,20 +22,22 @@ const ToastContext = createContext()
 const useToast = () => useContext(ToastContext)
 
 // 3. Create the toast group provider
-export function ToastProvider() {
-  const [state, send] = useMachine(toast.group.machine)
-  const ref = useSetup({ send, id: "1" })
-  const api = toast.group.connect(state, send)
+export function ToastProvider({ children }) {
+  const [state, send] = useMachine(toast.group.machine({ id: "1" }))
+
+  const api = toast.group.connect(state, send, normalizeProps)
 
   return (
     <ToastContext.Provider value={api}>
       {Object.entries(api.toastsByPlacement).map(([placement, toasts]) => (
         <div key={placement} {...api.getGroupProps({ placement })}>
           {toasts.map((toast) => (
-            <Toast key={toast.id} actor={toast.actor} />
+            <Toast key={toast.id} actor={toast} />
           ))}
         </div>
       ))}
+
+      {children}
     </ToastContext.Provider>
   )
 }

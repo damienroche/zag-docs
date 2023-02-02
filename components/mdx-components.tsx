@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Icon } from "@chakra-ui/icon"
-import { Box, HStack } from "@chakra-ui/layout"
+import { Box, HStack, Wrap } from "@chakra-ui/layout"
 import { chakra } from "@chakra-ui/system"
-import { useMachine, useSetup } from "@zag-js/react"
+import { normalizeProps, useMachine } from "@zag-js/react"
 import * as tabs from "@zag-js/tabs"
 import { MDX } from "contentlayer/core"
 import { allComponents, allSnippets } from "contentlayer/generated"
@@ -16,6 +16,7 @@ import { RiNpmjsFill } from "react-icons/ri"
 import { CopyButton } from "./copy-button"
 import { useFramework } from "./framework"
 import { Showcase } from "./showcase"
+import NextImage from "next/image"
 
 function SnippetItem({ body, id }: { body: MDX; id: string }) {
   const content = useMDX(body.code)
@@ -34,7 +35,7 @@ type ResourceLinkProps = {
   children: any
 }
 
-function ResourceLink({ href, icon, children }: ResourceLinkProps) {
+export function ResourceLink({ href, icon, children }: ResourceLinkProps) {
   return (
     <HStack
       as="a"
@@ -60,7 +61,7 @@ const components: Record<string, FC<Record<string, any>>> = {
   Resources(props) {
     const comp = allComponents.find((c) => c.package === props.pkg)
     return (
-      <HStack mt="6" spacing="4">
+      <Wrap mt="6" spacingX="4">
         <ResourceLink icon={RiNpmjsFill} href={comp.npmUrl}>
           {comp.version} (latest)
         </ResourceLink>
@@ -70,7 +71,7 @@ const components: Record<string, FC<Record<string, any>>> = {
         <ResourceLink icon={HiOutlineCode} href={comp.sourceUrl}>
           View Source
         </ResourceLink>
-      </HStack>
+      </Wrap>
     )
   },
   blockquote(props) {
@@ -132,16 +133,15 @@ const components: Record<string, FC<Record<string, any>>> = {
 
     const [state, send] = useMachine(
       tabs.machine({
+        id: props.id,
         value: userFramework ?? "react",
       }),
     )
-    const ref = useSetup({ send, id: props.id })
 
-    const api = tabs.connect(state, send)
+    const api = tabs.connect(state, send, normalizeProps)
 
     return (
       <Box
-        ref={ref}
         width="full"
         maxW="768px"
         my="8"
@@ -149,7 +149,7 @@ const components: Record<string, FC<Record<string, any>>> = {
         rounded="6px"
         {...api.rootProps}
       >
-        <Box {...api.triggerGroupProps}>
+        <Box {...api.tablistProps}>
           {FRAMEWORKS.map((framework) => (
             <chakra.button
               py="2"
@@ -211,6 +211,14 @@ const components: Record<string, FC<Record<string, any>>> = {
 
     return (
       <chakra.a textStyle="link" target="_blank" rel="noopener" {...props} />
+    )
+  },
+  Anatomy: ({ id }: { id: string }) => {
+    const src = `/illustrations/${id}.svg`
+    return (
+      <Box my="8" bg="linear-gradient(90deg, #41B883 -2.23%, #299464 92.64%)">
+        <NextImage src={src} alt="" width="1456px" height="812px" />
+      </Box>
     )
   },
 }

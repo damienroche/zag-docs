@@ -41,6 +41,8 @@ how we name its parts.
 
 > Each part includes a `data-part` attribute to help identify them in the DOM.
 
+<Anatomy id="number-input" />
+
 On a high level, the number input consists of:
 
 - **Root**: The root container for the number input.
@@ -65,7 +67,7 @@ The number input package exports two key functions:
 - `connect` — The function that translates the machine's state to JSX attributes
   and event handlers.
 
-> You'll need to provide a unique `id` to the `useSetup` hook. This is used to
+> You'll need to provide a unique `id` to the `useMachine` hook. This is used to
 > ensure that the every part has a unique identifier.
 
 Next, import the required hooks and functions for your framework and use the
@@ -284,14 +286,15 @@ added.
 
 ### Spin buttons
 
-The spin buttons can be styled individually with the `data-type` attribute.
+The spin buttons can be styled individually with their respective `data-part`
+attribute.
 
 ```css
-[data-part="spin-button"][data-type="increment"] {
-  /* styles for the increment spin button */
+[data-part="increment-trigger"] {
+  /* styles for the increment trigger element */
 }
 
-[data-part="spin-button"][data-type="decrement"] {
-  /* styles for the decrement spin button */
+[data-part="decrement-trigger"] {
+  /* styles for the decrement trigger element */
 }
 ```

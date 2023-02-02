@@ -1,15 +1,15 @@
 ```md
 <script setup>
 import * as tagsInput from "@zag-js/tags-input";
-import { normalizeProps, useMachine, useSetup } from "@zag-js/vue";
+import { normalizeProps, useMachine } from "@zag-js/vue";
 import { computed } from "vue";
 
 const [state, send] = useMachine(
   tagsInput.machine({
+    id: "1",
     value: ["React", "Vue"],
   })
 );
-const ref = useSetup({ send, id: "1" });
 const api = computed(() =>
   tagsInput.connect(state.value, send, normalizeProps)
 );
@@ -20,7 +20,7 @@ const api = computed(() =>
     <span v-for="(value, index) in api.value" :key="index">
       <div v-bind="api.getTagProps({ index, value })">
         <span>{value} </span>
-        <button v-bind="api.getTagDeleteButtonProps({ index, value })">
+        <button v-bind="api.getTagDeleteTriggerProps({ index, value })">
           &#x2715;
         </button>
       </div>

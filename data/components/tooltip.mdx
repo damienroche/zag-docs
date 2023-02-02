@@ -41,6 +41,8 @@ we name its parts.
 
 > Each part includes a `data-part` attribute to help identify them in the DOM.
 
+<Anatomy id="tooltip" />
+
 On a high level, the tooltip consists of:
 
 - **Trigger**: The trigger for the tooltip.
@@ -67,7 +69,7 @@ To get the tooltip working correct, you'll need to:
 - Setup the tooltip portal, this is a shared container for all tooltips
 - Add the `triggerProps`, and `tooltipProps` to the elements
 
-> You'll also need to provide a unique `id` to the `useSetup` hook. This is used
+> You'll also need to provide a unique `id` to the `useMachine` hook. This is used
 > to ensure that every part has a unique identifier.
 
 Next, import the required hooks and functions for your framework and use the
@@ -149,7 +151,7 @@ export type PositioningOptions = {
 ## Adding an arrow
 
 To render an arrow within the tooltip, use the `api.arrowProps` and
-`api.innerArrowProps`.
+`api.arrowTipProps`.
 
 ```jsx {6-8}
 //...
@@ -158,7 +160,7 @@ const api = popover.connect(state, send)
 return (
   <div {...api.positionerProps}>
     <div {...api.arrowProps}>
-      <div {...api.innerArrowProps} />
+      <div {...api.arrowTipProps} />
     </div>
     <div {...api.contentProps}>{/* ... */}</div>
   </div>

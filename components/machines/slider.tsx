@@ -1,18 +1,19 @@
 import * as slider from "@zag-js/slider"
-import { useMachine, useSetup } from "@zag-js/react"
+import { normalizeProps, useMachine } from "@zag-js/react"
 import { chakra } from "@chakra-ui/system"
 import { Center, Flex } from "@chakra-ui/layout"
+import { useId } from "react"
 
 export function Slider(props: any) {
   const [state, send] = useMachine(
-    slider.machine({ min: -50, max: 50, value: 20 }),
+    slider.machine({ id: useId(), min: -50, max: 50, value: 20 }),
     { context: props.controls },
   )
-  const ref = useSetup({ send, id: "1" })
-  const api = slider.connect(state, send)
+
+  const api = slider.connect(state, send, normalizeProps)
 
   return (
-    <chakra.div width="240px" ref={ref} {...api.rootProps}>
+    <chakra.div width="240px" {...api.rootProps}>
       <Flex justify="space-between">
         <chakra.label mr="2" {...api.labelProps}>
           Quantity
@@ -53,7 +54,7 @@ export function Slider(props: any) {
           _disabled={{ bg: "gray.200" }}
           {...api.thumbProps}
         >
-          <input {...api.inputProps} />
+          <input {...api.hiddenInputProps} />
         </Center>
       </Flex>
     </chakra.div>

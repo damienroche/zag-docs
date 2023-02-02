@@ -1,8 +1,8 @@
 import * as menu from "@zag-js/menu"
-import { useMachine, useSetup } from "@zag-js/react"
+import { normalizeProps, useMachine, Portal } from "@zag-js/react"
 import { chakra } from "@chakra-ui/system"
-import Portal from "@reach/portal"
 import { Button } from "components/button"
+import { useId } from "react"
 
 const data = [
   { label: "Edit", value: "edit" },
@@ -12,12 +12,14 @@ const data = [
 ]
 
 export function Menu(props) {
-  const [state, send] = useMachine(menu.machine, { context: props.controls })
-  const ref = useSetup({ send, id: "1" })
-  const api = menu.connect(state, send)
+  const [state, send] = useMachine(menu.machine({ id: useId() }), {
+    context: props.controls,
+  })
+
+  const api = menu.connect(state, send, normalizeProps)
 
   return (
-    <div ref={ref}>
+    <div>
       <Button size="sm" variant="green" {...api.triggerProps}>
         Actions{" "}
         <chakra.span ml="2" aria-hidden>

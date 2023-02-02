@@ -1,23 +1,23 @@
-import { Portal } from "@reach/portal"
 import * as popover from "@zag-js/popover"
-import { useMachine, useSetup } from "@zag-js/react"
+import { normalizeProps, useMachine, Portal } from "@zag-js/react"
 import * as React from "react"
 import { chakra } from "@chakra-ui/system"
 import { Stack } from "@chakra-ui/layout"
 import { HiX } from "react-icons/hi"
 import { Button } from "components/button"
+import { useId } from "react"
 
 export function Popover(props: any) {
-  const [state, send] = useMachine(popover.machine, {
+  const [state, send] = useMachine(popover.machine({ id: useId() }), {
     context: props.controls,
   })
-  const ref = useSetup({ send, id: "1" })
-  const api = popover.connect(state, send)
+
+  const api = popover.connect(state, send, normalizeProps)
 
   const Wrapper = api.portalled ? Portal : React.Fragment
 
   return (
-    <div ref={ref}>
+    <div>
       <Button size="sm" variant="green" {...api.triggerProps}>
         Click me
       </Button>
@@ -39,7 +39,7 @@ export function Popover(props: any) {
               sx={{ "--arrow-background": "white", "--arrow-size": "8px" }}
               {...api.arrowProps}
             >
-              <chakra.div rounded="sm" {...api.innerArrowProps} />
+              <chakra.div rounded="sm" {...api.arrowTipProps} />
             </chakra.div>
 
             <Stack>
@@ -65,7 +65,7 @@ export function Popover(props: any) {
               top="3"
               right="3"
               padding="2"
-              {...api.closeButtonProps}
+              {...api.closeTriggerProps}
             >
               <HiX />
             </chakra.button>

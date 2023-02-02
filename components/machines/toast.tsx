@@ -1,13 +1,14 @@
-import { useActor, useMachine, useSetup } from "@zag-js/react"
+import { normalizeProps, useActor, useMachine } from "@zag-js/react"
 import * as toast from "@zag-js/toast"
 import { useRef } from "react"
 import { chakra } from "@chakra-ui/system"
 import { HiX } from "react-icons/hi"
 import { Button } from "components/button"
+import { useId } from "react"
 
 function Toast({ actor }: { actor: toast.Service }) {
   const [state, send] = useActor(actor)
-  const api = toast.connect(state, send)
+  const api = toast.connect(state, send, normalizeProps)
   const changed = api.type === "info"
   return (
     <chakra.div
@@ -28,26 +29,6 @@ function Toast({ actor }: { actor: toast.Service }) {
       }}
       {...api.rootProps}
     >
-      <chakra.div
-        bg="whiteAlpha.500"
-        sx={{
-          position: "absolute",
-          width: "full",
-          bottom: "0",
-          insetX: "0",
-          height: "4px",
-        }}
-      >
-        <chakra.div
-          key={state.value}
-          sx={{
-            height: "inherit",
-            bg: "white",
-            animationName: state.matches("active") ? "shrink" : "none",
-          }}
-          {...api.progressbarProps}
-        />
-      </chakra.div>
       <p {...api.titleProps}>
         [{api.type}] {api.title}
       </p>
@@ -68,18 +49,18 @@ function Toast({ actor }: { actor: toast.Service }) {
 export function ToastGroup(props: any) {
   const [state, send] = useMachine(
     toast.group.machine({
+      id: useId(),
       offsets: "24px",
     }),
     { context: props.controls },
   )
 
-  const ref = useSetup({ send, id: "1" })
-  const api = toast.group.connect(state, send)
+  const api = toast.group.connect(state, send, normalizeProps)
   const id = useRef<string>()
 
   return (
     <>
-      <div ref={ref} style={{ display: "flex", gap: "16px" }}>
+      <div style={{ display: "flex", gap: "16px" }}>
         <Button
           size="sm"
           variant="outline"

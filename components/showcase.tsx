@@ -1,4 +1,5 @@
 import { Checkbox } from "./machines/checkbox"
+import { Radio } from "./machines/radio"
 import { Accordion } from "./machines/accordion"
 import { Dialog } from "./machines/dialog"
 import { Editable } from "./machines/editable"
@@ -13,6 +14,14 @@ import { TagsInput } from "./machines/tags-input"
 import { ToastGroup } from "./machines/toast"
 import { Tooltip } from "./machines/tooltip"
 import { Playground } from "./playground"
+import { Rating } from "components/machines/rating"
+import { Pressable } from "components/machines/pressable"
+import { ContextMenu } from "components/machines/context-menu"
+import { NestedMenu } from "components/machines/nested-menu"
+import { HoverCard } from "components/machines/hover-card"
+import { Pagination } from "components/machines/pagination"
+import { Select } from "./machines/select"
+import { Combobox } from "components/machines/combobox"
 
 const components = {
   Dialog: () => (
@@ -32,7 +41,64 @@ const components = {
       defaultProps={{
         indeterminate: false,
         disabled: false,
-        readonly: false,
+        readOnly: false,
+      }}
+    />
+  ),
+  Combobox: () => (
+    <Playground
+      component={Combobox}
+      defaultProps={{
+        disabled: false,
+        readOnly: false,
+        blurOnSelect: false,
+        loop: false,
+        inputBehavior: {
+          default: "autohighlight",
+          options: ["autohighlight", "autocomplete", "none"],
+        },
+      }}
+    />
+  ),
+  Radio: () => (
+    <Playground
+      component={Radio}
+      defaultProps={{
+        disabled: false,
+        readOnly: false,
+      }}
+    />
+  ),
+  HoverCard: () => (
+    <Playground
+      component={HoverCard}
+      defaultProps={{
+        openDelay: 700,
+        closeDelay: 300,
+      }}
+    />
+  ),
+  Pagination: () => (
+    <Playground
+      component={Pagination}
+      defaultProps={{
+        pageSize: 10,
+        siblingCount: 1,
+      }}
+    />
+  ),
+  Rating: () => (
+    <Playground
+      component={Rating}
+      defaultProps={{
+        allowHalf: true,
+        disabled: false,
+        readOnly: false,
+        max: 5,
+        dir: {
+          options: ["ltr", "rtl"],
+          default: "ltr",
+        },
       }}
     />
   ),
@@ -42,10 +108,6 @@ const components = {
       defaultProps={{
         collapsible: true,
         multiple: false,
-        value: {
-          default: "Aircrafts",
-          options: ["Aircrafts", "Automobiles", "Watercraft"],
-        },
       }}
     />
   ),
@@ -79,6 +141,17 @@ const components = {
         },
         blurOnComplete: false,
         mask: false,
+      }}
+    />
+  ),
+  Pressable: () => (
+    <Playground
+      component={Pressable}
+      defaultProps={{
+        disabled: false,
+        preventFocusOnPress: false,
+        cancelOnPointerExit: false,
+        allowTextSelectionOnPress: false,
       }}
     />
   ),
@@ -125,7 +198,7 @@ const components = {
       component={Slider}
       defaultProps={{
         disabled: false,
-        readonly: false,
+        readOnly: false,
         origin: { default: "start", options: ["start", "center"] },
         dir: { default: "ltr", options: ["ltr", "rtl"] },
       }}
@@ -136,7 +209,7 @@ const components = {
       component={RangeSlider}
       defaultProps={{
         disabled: false,
-        readonly: false,
+        readOnly: false,
         dir: { default: "ltr", options: ["ltr", "rtl"] },
       }}
     />
@@ -153,6 +226,8 @@ const components = {
     />
   ),
   Menu: () => <Playground component={Menu} />,
+  ContextMenu: () => <Playground component={ContextMenu} />,
+  NestedMenu: () => <Playground component={NestedMenu} />,
   Tooltip: () => (
     <Playground
       component={Tooltip}
@@ -172,9 +247,20 @@ const components = {
       }}
     />
   ),
+  Select: () => (
+    <Playground
+      component={Select}
+      defaultProps={{
+        loop: false,
+        selectOnTab: false,
+        disabled: false,
+        readOnly: false,
+      }}
+    />
+  ),
 }
 
 export function Showcase(props: { id: keyof typeof components }) {
-  const Component = components[props.id]
+  const Component = components[props.id] ?? "span"
   return <Component />
 }

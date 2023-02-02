@@ -1,20 +1,22 @@
 import * as tagsInput from "@zag-js/tags-input"
-import { useMachine, useSetup } from "@zag-js/react"
+import { normalizeProps, useMachine } from "@zag-js/react"
 import { chakra } from "@chakra-ui/system"
+import { useId } from "react"
 
 export function TagsInput(props: any) {
   const [state, send] = useMachine(
     tagsInput.machine({
+      id: useId(),
       value: ["React", "Vue"],
     }),
     { context: props.controls },
   )
-  const ref = useSetup({ send, id: "1" })
-  const api = tagsInput.connect(state, send)
+
+  const api = tagsInput.connect(state, send, normalizeProps)
 
   return (
     <chakra.div width="400px">
-      <chakra.div ref={ref} {...api.rootProps}>
+      <chakra.div {...api.rootProps}>
         <label {...api.labelProps}>Enter frameworks:</label>
         <chakra.div
           className="focus-outline"
@@ -39,7 +41,7 @@ export function TagsInput(props: any) {
                   {...api.getTagProps(opt)}
                 >
                   <span>{value}</span>
-                  <chakra.button ml="1" {...api.getTagDeleteButtonProps(opt)}>
+                  <chakra.button ml="1" {...api.getTagDeleteTriggerProps(opt)}>
                     &#x2715;
                   </chakra.button>
                 </chakra.div>
